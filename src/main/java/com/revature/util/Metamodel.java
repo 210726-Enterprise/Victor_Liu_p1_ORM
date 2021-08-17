@@ -1,6 +1,7 @@
 package com.revature.util;
 
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
 import java.util.*;
 
 /**
@@ -12,25 +13,35 @@ public class Metamodel<E>
 {
     private Class<E> aClass;
     private String table;
-    private Map<Field, List<?>> idField;
-    private Map<Field, List<?>> columnFields;
+    private Map<Field, String> fieldToColumnMap;
+    private Map<String, Field> columnToFieldMap;
 
-    public Metamodel(Class<E> aClass, String table)
+    public Metamodel(Class<E> aClass, String table, List<String> columns, List<Field> fields)
     {
         this.aClass = aClass;
         this.table = table;
-        this.idField = new HashMap<>();
-        this.columnFields = new HashMap<>();
+        createMappings(columns, fields);
     }
 
-    // TODO: 8/17/2021 figure out parameters (ResultSet?)
-    public E convertToObject()
+    private void createMappings(List<String> columns, List<Field> fields)
     {
+        for(int i = 0; i < fields.size(); i++)
+        {
+            fieldToColumnMap.putIfAbsent(fields.get(i), columns.get(i));
+            columnToFieldMap.putIfAbsent(columns.get(i), fields.get(i));
+        }
+    }
+
+
+    // TODO: 8/17/2021 figure out parameters (ResultSet?)
+    private E convertToObject(ResultSet resultSet)
+    {
+
         return null;
     }
 
     // TODO: 8/17/2021 figure out return type (List of columns?)
-    public E convertToDatabaseRecord(E object)
+    private E convertToDatabaseRecord(E object)
     {
         return null;
     }
