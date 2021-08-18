@@ -1,13 +1,12 @@
 package com.revature.orm.model;
 
 import com.revature.orm.annotations.Column;
+import com.revature.orm.annotations.MetamodelConstructor;
 import com.revature.orm.annotations.PrimaryKey;
 import com.revature.orm.model.ColumnField;
 import com.revature.orm.model.PrimaryKeyField;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
+import java.lang.reflect.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -25,7 +24,7 @@ public class Metamodel<E>
 
     public Metamodel(Class aClass)
     {
-        aClass = aClass;
+        this.aClass = aClass;
         createMappings();
     }
 
@@ -46,16 +45,41 @@ public class Metamodel<E>
         }
     }
 
-
-    // TODO: 8/17/2021 figure out parameters (ResultSet?)
-    private E convertToObject(ResultSet resultSet) throws SQLException
+    // TODO: 8/18/2021 move to new service class? 
+    private E convertToObject(ResultSet resultSet) throws SQLException, InvocationTargetException, InstantiationException, IllegalAccessException 
     {
         if(resultSet.next())
         {
-            Object primaryKey = resultSet.getObject(primaryKeyField.getTableColumnName());
-
+            Constructor[] constructors = aClass.getDeclaredConstructors();
+            for(Constructor constructor : constructors)
+            {
+                if(constructor.getAnnotation(MetamodelConstructor.class) != null)
+                {
+                    Parameter[] constructorParameters = constructor.getParameters();
+                    List<Object> argumentList = getArgumentList(constructorParameters, resultSet);
+                    return (E) constructor.newInstance(argumentList);
+                }
+            }
         }
         return null;
+    }
+
+    private List<Object> getArgumentList(Parameter[] parameters, ResultSet resultSet) throws SQLException
+    {
+        List<Object> arguments = new ArrayList<>();
+        for(Parameter parameter : parameters)
+        {
+            for(ColumnField columnField : columnFields)
+            {
+                if(columnField.getClassFieldName().equals(parameter.getName()))
+                {
+                    Type argumentType = columnField.getType();
+                    Object record = resultSet.getObject(columnField.getTableColumnName());
+                    arguments.add(argumentType.getClass().cast(record));
+                }
+            }
+        }
+        return arguments;
     }
 
     // TODO: 8/17/2021 figure out return type (List of columns?)
