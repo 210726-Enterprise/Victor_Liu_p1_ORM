@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 
 public class ColumnField
 {
+    private Field field;
     private String fieldName;
     private String columnName;
     private Class type;
@@ -17,9 +18,15 @@ public class ColumnField
         {
             throw new IllegalStateException("Provided field, " + field.getName() + "is not annotated with @Column");
         }
+        this.field = field;
         this.fieldName = field.getName();
         this.columnName = annotation.columnName();
         this.type = field.getType();
+    }
+
+    public Field getField()
+    {
+        return field;
     }
 
     public String getClassFieldName()

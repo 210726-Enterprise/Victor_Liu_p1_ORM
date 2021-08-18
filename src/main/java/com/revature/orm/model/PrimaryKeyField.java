@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 
 public class PrimaryKeyField
 {
+    private Field field;
     private String fieldName;
     private String columnName;
     private Class type;
@@ -17,9 +18,15 @@ public class PrimaryKeyField
         {
             throw new IllegalStateException("Provided field, " + field.getName() + "is not annotated with @PrimaryKey");
         }
+        this.field = field;
         this.fieldName = field.getName();
         this.columnName = annotation.primaryKeyName();
         this.type = field.getType();
+    }
+
+    public Field getField()
+    {
+        return field;
     }
 
     public String getClassFieldName()
