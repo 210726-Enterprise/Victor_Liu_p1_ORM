@@ -28,6 +28,21 @@ public class Metamodel<E>
         createMappings();
     }
 
+    public Class<E> getAClass()
+    {
+        return aClass;
+    }
+
+    public PrimaryKeyField getPrimaryKeyField()
+    {
+        return primaryKeyField;
+    }
+
+    public List<ColumnField> getColumnFields()
+    {
+        return columnFields;
+    }
+
     private void createMappings()
     {
         columnFields = new ArrayList<>();
@@ -45,7 +60,7 @@ public class Metamodel<E>
         }
     }
 
-    // TODO: 8/18/2021 move to new service class? 
+    // TODO: 8/18/2021 move to new service class?
     private E convertToObject(ResultSet resultSet) throws SQLException, InvocationTargetException, InstantiationException, IllegalAccessException 
     {
         if(resultSet.next())
@@ -82,11 +97,7 @@ public class Metamodel<E>
         return arguments;
     }
 
-    // TODO: 8/17/2021 figure out return type (List of columns?)
-    private E convertToDatabaseRecord(E object)
-    {
-        return null;
-    }
+
 
     public E retrieve()
     {
