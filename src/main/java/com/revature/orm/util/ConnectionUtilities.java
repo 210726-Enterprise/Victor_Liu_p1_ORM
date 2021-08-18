@@ -1,10 +1,17 @@
 package com.revature.orm.util;
 
+import com.revature.orm.annotations.Column;
+import com.revature.orm.model.ColumnField;
+import com.revature.orm.model.Metamodel;
+
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * creates connections to the database
@@ -27,42 +34,47 @@ public class ConnectionUtilities
         }
     }
 
-    public void create(Object newRecord, String table)
+    // TODO: 8/17/2021 figure out return type (List of columns?)
+    private List<Object> convertToDatabaseRecord(Object object)
+    {
+        List<Object> columns = new ArrayList<>();
+        Field[] attributes = object.getClass().getDeclaredFields();
+        for(Field field : attributes)
+        {
+
+        }
+        return null;
+    }
+
+    public void create(Object newRecord, Metamodel metamodel, String table)
     {
         String sqlStatement = "insert into \"" + table + "\"";
 
-        Class newRecordClass = newRecord.getClass();
-        Field[] numberOfFields = newRecordClass.getDeclaredFields();
-        for(Field field : numberOfFields)
+        Class newRecordClass = metamodel.getAClass();
+        List<ColumnField> columnFields = metamodel.getColumnFields();
+        for(ColumnField columnField : columnFields)
         {
-            sqlStatement += " " + field.getName();
+            sqlStatement += " " + columnField.getTableColumnName();
         }
         sqlStatement += " values (? ";
-        for(int i = 1; i < numberOfFields.length; i++)
+        for(int i = 1; i < columnFields.size(); i++)
         {
             sqlStatement += ", ?";
         }
         sqlStatement += ")";
 
         PreparedStatement preparedStatement;
-
         try
         {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            for(Field field : numberOfFields)
+            List<Field> fields = Arrays.asList(newRecord.getClass().getDeclaredFields());
+            for(int i = 0; i < columnFields.size(); i++)
             {
-                switch (field.getType().getSimpleName())
-                {
-                    case "int":
-                    {
-
-                    }
-                    default:
-                }
+                preparedStatement.setObject(i+1, columnFields.get(i).getField().get(newRecord));
             }
             preparedStatement.execute();
         }
-        catch (SQLException e)
+        catch (SQLException | IllegalAccessException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
