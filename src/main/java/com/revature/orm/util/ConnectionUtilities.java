@@ -46,6 +46,7 @@ public class ConnectionUtilities
         return null;
     }
 
+    // TODO: 8/18/2021 see if can refactor with helper methods 
     public void create(Object newRecord, Metamodel metamodel, String table)
     {
         String sqlStatement = "insert into \"" + table + "\"";
