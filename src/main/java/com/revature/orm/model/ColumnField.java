@@ -15,19 +15,19 @@ public class ColumnField
         Column annotation = field.getAnnotation(Column.class);
         if (annotation == null)
         {
-            throw new IllegalStateException("Provided field, " + getName() + "is not annotated with @Column");
+            throw new IllegalStateException("Provided field, " + field.getName() + "is not annotated with @Column");
         }
         this.fieldName = field.getName();
         this.columnName = annotation.columnName();
         this.type = field.getType();
     }
 
-    public String getName()
+    public String getClassFieldName()
     {
         return fieldName;
     }
 
-    public String getColumnName()
+    public String getTableColumnName()
     {
         return columnName;
     }

@@ -15,19 +15,19 @@ public class PrimaryKeyField
         PrimaryKey annotation = field.getAnnotation(PrimaryKey.class);
         if (annotation == null)
         {
-            throw new IllegalStateException("Provided field, " + getName() + "is not annotated with @PrimaryKey");
+            throw new IllegalStateException("Provided field, " + field.getName() + "is not annotated with @PrimaryKey");
         }
         this.fieldName = field.getName();
         this.columnName = annotation.primaryKeyName();
         this.type = field.getType();
     }
 
-    public String getName()
+    public String getClassFieldName()
     {
         return fieldName;
     }
 
-    public String getColumnName()
+    public String getTableColumnName()
     {
         return columnName;
     }
