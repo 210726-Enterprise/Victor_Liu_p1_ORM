@@ -1,24 +1,24 @@
-package com.revature.model;
+package com.revature.orm.model;
 
-import com.revature.annotations.Column;
+import com.revature.orm.annotations.PrimaryKey;
 
 import java.lang.reflect.Field;
 
-public class ColumnField
+public class PrimaryKeyField
 {
     private String fieldName;
     private String columnName;
     private Class type;
 
-    public ColumnField(Field field)
+    public PrimaryKeyField(Field field)
     {
-        Column annotation = field.getAnnotation(Column.class);
+        PrimaryKey annotation = field.getAnnotation(PrimaryKey.class);
         if (annotation == null)
         {
-            throw new IllegalStateException("Provided field, " + getName() + "is not annotated with @Column");
+            throw new IllegalStateException("Provided field, " + getName() + "is not annotated with @PrimaryKey");
         }
         this.fieldName = field.getName();
-        this.columnName = annotation.columnName();
+        this.columnName = annotation.primaryKeyName();
         this.type = field.getType();
     }
 

@@ -1,7 +1,9 @@
-package com.revature.util;
+package com.revature.orm.util;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -12,18 +14,11 @@ import java.util.*;
 public class Metamodel<E>
 {
     private Class<E> aClass;
-    private String table;
-    private Map<Field, String> fieldToColumnMap;
-    private Map<String, Field> columnToFieldMap;
 
-    public Metamodel(Class<E> aClass, String table, List<String> columns, List<Field> fields)
-    {
-        this.aClass = aClass;
-        this.table = table;
-        createMappings(columns, fields);
-    }
 
-    private void createMappings(List<String> columns, List<Field> fields)
+
+
+    private void createMappings(List<String> columns, List<String> fields)
     {
         for(int i = 0; i < fields.size(); i++)
         {
@@ -32,11 +27,14 @@ public class Metamodel<E>
         }
     }
 
-
     // TODO: 8/17/2021 figure out parameters (ResultSet?)
-    private E convertToObject(ResultSet resultSet)
+    private E convertToObject(ResultSet resultSet) throws SQLException
     {
 
+        if(resultSet.next())
+        {
+
+        }
         return null;
     }
 
