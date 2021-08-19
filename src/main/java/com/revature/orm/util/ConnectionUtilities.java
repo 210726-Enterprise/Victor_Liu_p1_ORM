@@ -1,6 +1,6 @@
 package com.revature.orm.util;
 
-import com.revature.orm.annotations.Column;
+import com.revature.orm.annotations.Table;
 import com.revature.orm.model.ColumnField;
 import com.revature.orm.model.Metamodel;
 
@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,24 +33,13 @@ public class ConnectionUtilities
         }
     }
 
-    // TODO: 8/17/2021 figure out return type (List of columns?)
-    private List<Object> convertToDatabaseRecord(Object object)
-    {
-        List<Object> columns = new ArrayList<>();
-        Field[] attributes = object.getClass().getDeclaredFields();
-        for(Field field : attributes)
-        {
-
-        }
-        return null;
-    }
-
     // TODO: 8/18/2021 see if can refactor with helper methods 
-    public void create(Object newRecord, Metamodel metamodel, String table)
+    public void create(Object newRecord, Metamodel metamodel)
     {
-        String sqlStatement = "insert into \"" + table + "\"";
+        Class<?> newRecordClass = metamodel.getAClass();
 
-        Class newRecordClass = metamodel.getAClass();
+        String sqlStatement = "insert into \"" + newRecordClass.getAnnotation(Table.class).tableName() + "\"";
+
         List<ColumnField> columnFields = metamodel.getColumnFields();
         for(ColumnField columnField : columnFields)
         {
