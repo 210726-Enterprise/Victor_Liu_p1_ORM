@@ -6,10 +6,10 @@ import java.lang.reflect.Field;
 
 public class PrimaryKeyField
 {
-    private Field field;
-    private String fieldName;
-    private String columnName;
-    private Class type;
+    private final Field field;
+    private final String fieldName;
+    private final String columnName;
+    private final Class<?> type;
 
     public PrimaryKeyField(Field field)
     {

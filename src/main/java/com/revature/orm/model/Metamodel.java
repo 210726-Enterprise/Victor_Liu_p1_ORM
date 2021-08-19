@@ -1,14 +1,9 @@
 package com.revature.orm.model;
 
 import com.revature.orm.annotations.Column;
-import com.revature.orm.annotations.MetamodelConstructor;
 import com.revature.orm.annotations.PrimaryKey;
-import com.revature.orm.model.ColumnField;
-import com.revature.orm.model.PrimaryKeyField;
 
 import java.lang.reflect.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -18,11 +13,11 @@ import java.util.*;
 // TODO: 8/17/2021 Rename class?
 public class Metamodel<E>
 {
-    private Class<E> aClass;
+    private final Class<E> aClass;
     private PrimaryKeyField primaryKeyField;
     private List<ColumnField> columnFields;
 
-    public Metamodel(Class aClass)
+    public Metamodel(Class<E> aClass)
     {
         this.aClass = aClass;
         createMappings();
