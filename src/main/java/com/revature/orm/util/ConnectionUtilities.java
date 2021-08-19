@@ -1,14 +1,13 @@
 package com.revature.orm.util;
 
+import com.revature.orm.annotations.MetamodelConstructor;
 import com.revature.orm.annotations.Table;
 import com.revature.orm.model.ColumnField;
 import com.revature.orm.model.Metamodel;
 
-import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.lang.reflect.*;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +33,7 @@ public class ConnectionUtilities
     }
 
     // TODO: 8/18/2021 see if can refactor with helper methods 
+    // TODO: 8/19/2021 get metamodel from newRecord.getClass()
     public void create(Object newRecord, Metamodel metamodel)
     {
         Class<?> newRecordClass = metamodel.getAClass();
@@ -68,5 +68,66 @@ public class ConnectionUtilities
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    // TODO: 8/19/2021 set records list type 
+    public void read(Metamodel metamodel)
+    {
+        Class<?> recordClass = metamodel.getAClass();
+
+        String sqlStatement = "select * from \"" + recordClass.getAnnotation(Table.class).tableName();
+
+        PreparedStatement preparedStatement;
+
+        List records = new ArrayList();
+
+        try
+        {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            Constructor[] constructors = recordClass.getDeclaredConstructors();
+            Constructor metamodelConstructor = null;
+            for(Constructor constructor : constructors)
+            {
+                if (constructor.getAnnotation(MetamodelConstructor.class) != null)
+                {
+                    metamodelConstructor = constructor;
+                    break;
+                }
+            }
+
+            Parameter[] constructorParameters = metamodelConstructor.getParameters();
+            List<ColumnField> columnFields = metamodel.getColumnFields();
+            List<ColumnField> sortedColumnFieldsInParameterOrder = new ArrayList<>();
+            for(Parameter parameter : constructorParameters) 
+            {
+                for (ColumnField columnField : columnFields) 
+                {
+                    if(columnField.getClassFieldName().equals(parameter.getName())) 
+                    {
+                        sortedColumnFieldsInParameterOrder.add(columnField);
+                        continue;
+                    }
+                }
+            }
+            while(resultSet.next())
+            {
+                List<Object> arguments = new ArrayList<>();
+                for(ColumnField columnField : sortedColumnFieldsInParameterOrder) 
+                {
+                    Type argumentType = columnField.getType();
+                    Object record = resultSet.getObject(columnField.getTableColumnName());
+                    arguments.add(argumentType.getClass().cast(record));
+                }
+                records.add(metamodelConstructor.newInstance(arguments));
+            }
+        }
+        catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException throwables)
+        {
+            throwables.printStackTrace();
+        }
+        
+        
     }
 }
