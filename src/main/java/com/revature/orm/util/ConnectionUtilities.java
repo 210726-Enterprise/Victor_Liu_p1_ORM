@@ -33,9 +33,9 @@ public class ConnectionUtilities
     }
 
     // TODO: 8/18/2021 see if can refactor with helper methods
-    public void create(Object newRecord, Metamodel<?> metamodel)
+    public <T> void create(Object newRecord, Metamodel<T> metamodel)
     {
-        Class<?> newRecordClass = metamodel.getAClass();
+        Class<T> newRecordClass = metamodel.getAClass();
 
         String sqlStatement = "insert into \"" + newRecordClass.getAnnotation(Table.class).tableName() + "\"";
 
@@ -70,15 +70,15 @@ public class ConnectionUtilities
     }
 
     // TODO: 8/19/2021
-    public List<?> read(Metamodel<?> metamodel)
+    public <T> List<T> read(Metamodel<T> metamodel)
     {
-        Class<?> recordClass = metamodel.getAClass();
+        Class<T> recordClass = metamodel.getAClass();
 
         String sqlStatement = "select * from \"" + recordClass.getAnnotation(Table.class).tableName();
 
         PreparedStatement preparedStatement;
 
-        List<?> records = new ArrayList<>();
+        List<T> records = new ArrayList<>();
 
         try
         {
@@ -119,7 +119,7 @@ public class ConnectionUtilities
                     Object record = resultSet.getObject(columnField.getTableColumnName());
                     arguments.add(argumentType.getClass().cast(record));
                 }
-                records.add(metamodelConstructor.newInstance(arguments));
+                records.add(recordClass.cast(metamodelConstructor.newInstance(arguments)));
             }
         }
         catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException throwables)
@@ -130,9 +130,9 @@ public class ConnectionUtilities
         return records;
     }
 
-    public void update(Object record, Metamodel<?> metamodel)
+    public <T> void update(Object record, Metamodel<T> metamodel)
     {
-        Class<?> recordClass = metamodel.getAClass();
+        Class<T> recordClass = metamodel.getAClass();
 
         String sqlStatement = "update \"" + recordClass.getAnnotation(Table.class).tableName() + "\" set";
 
@@ -162,9 +162,9 @@ public class ConnectionUtilities
         }
     }
 
-    public void delete(Object oldRecord, Metamodel<?>metamodel)
+    public <T> void delete(Object oldRecord, Metamodel<T> metamodel)
     {
-        Class<?> recordClass = metamodel.getAClass();
+        Class<T> recordClass = metamodel.getAClass();
 
         String sqlStatement = "delete from \"" + recordClass.getAnnotation(Table.class).tableName();
 
