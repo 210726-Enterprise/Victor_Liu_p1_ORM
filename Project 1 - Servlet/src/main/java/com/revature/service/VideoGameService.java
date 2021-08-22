@@ -2,7 +2,7 @@ package com.revature.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.VideoGame;
-import com.revature.orm.util.ConfigBuilder;
+import com.revature.orm.util.ORM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,14 +18,14 @@ public class VideoGameService
     private static final Logger logger = LoggerFactory.getLogger(VideoGameService.class);
 
     private ObjectMapper objectMapper;
-    private ConfigBuilder orm;
+    private ORM orm;
 
     public VideoGameService(String dbUrl, String username, String password)
     {
         objectMapper = new ObjectMapper();
         List<Class> classList = new ArrayList<>();
         classList.add(VideoGame.class);
-        orm = new ConfigBuilder(dbUrl, username, password, classList);
+        orm = new ORM(dbUrl, username, password, classList);
     }
 
     public void getVideoGame(HttpServletRequest req, HttpServletResponse resp)
