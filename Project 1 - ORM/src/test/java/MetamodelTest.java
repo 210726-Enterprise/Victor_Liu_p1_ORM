@@ -1,12 +1,7 @@
-import com.revature.orm.model.ColumnField;
 import com.revature.orm.model.Metamodel;
-import com.revature.orm.model.PrimaryKeyField;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MetamodelTest
 {
