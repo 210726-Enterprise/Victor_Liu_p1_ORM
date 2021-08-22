@@ -6,39 +6,44 @@ import com.revature.orm.model.Metamodel;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: 8/20/2021 rename class 
+// TODO: 8/20/2021 rename class
 public class ConfigBuilder
 {
-    private static List<Metamodel> metamodels;
-    private static ConnectionUtilities connectionUtilities;
+    private List<Metamodel> metamodels;
+    private ConnectionUtilities connectionUtilities;
     
-    public static void configure()
+    public void ConfigBuilder(String dbUrl, String username, String password, List<Class> classes)
     {
         connectionUtilities = new ConnectionUtilities();
+        connectionUtilities.createConnection(dbUrl, username, password);
         metamodels = new ArrayList<>();
+        for(Class clazz : classes)
+        {
+            metamodels.add(new Metamodel(clazz));
+        }
     }
     
-    public static void addRecord(Object newRecord)
+    public void addRecord(Object newRecord)
     {
         connectionUtilities.create(newRecord, findMetamodel(newRecord));
     }
     
-    public static void getRecords(String table)
+    public void getRecords(String table)
     {
         connectionUtilities.read(findMetamodel(table));
     }
     
-    public static void updateRecord(Object updatedRecord)
+    public void updateRecord(Object updatedRecord)
     {
         connectionUtilities.update(updatedRecord, findMetamodel(updatedRecord));
     }
     
-    public static void deleteRecord(Object oldRecord)
+    public void deleteRecord(Object oldRecord)
     {
         connectionUtilities.delete(oldRecord, findMetamodel(oldRecord));
     }
     
-    private static Metamodel<?> findMetamodel(Object relation)
+    private Metamodel<?> findMetamodel(Object relation)
     {
         for(Metamodel<?> metamodel : metamodels)
         {
@@ -50,7 +55,7 @@ public class ConfigBuilder
         return null;
     }
 
-    private static Metamodel<?> findMetamodel(String table)
+    private Metamodel<?> findMetamodel(String table)
     {
         for(Metamodel<?> metamodel : metamodels)
         {
