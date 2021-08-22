@@ -10,37 +10,37 @@ import java.util.List;
 public class ORM
 {
     private List<Metamodel> metamodels;
-    private ConnectionUtilities connectionUtilities;
+    private DMLMethods databaseManipulator;
     
     public ORM(String dbUrl, String username, String password, List<Class> classes)
     {
-        connectionUtilities = new ConnectionUtilities();
-        connectionUtilities.createConnection(dbUrl, username, password);
+        ConnectionUtilities.createConnection(dbUrl, username, password);
         metamodels = new ArrayList<>();
         for(Class clazz : classes)
         {
             metamodels.add(new Metamodel(clazz));
         }
+        databaseManipulator = new DMLMethods();
     }
     
     public boolean addRecord(Object newRecord)
     {
-        return connectionUtilities.create(newRecord, findMetamodel(newRecord));
+        return databaseManipulator.create(newRecord, findMetamodel(newRecord));
     }
     
     public List<?> getRecords(String table)
     {
-        return connectionUtilities.read(findMetamodel(table));
+        return databaseManipulator.read(findMetamodel(table));
     }
     
     public boolean updateRecord(Object updatedRecord)
     {
-        return connectionUtilities.update(updatedRecord, findMetamodel(updatedRecord));
+        return databaseManipulator.update(updatedRecord, findMetamodel(updatedRecord));
     }
     
     public boolean deleteRecord(Object oldRecord)
     {
-        return connectionUtilities.delete(oldRecord, findMetamodel(oldRecord));
+        return databaseManipulator.delete(oldRecord, findMetamodel(oldRecord));
     }
     
     private Metamodel<?> findMetamodel(Object relation)
