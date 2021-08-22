@@ -34,6 +34,15 @@ public class VideoGame
         this.genre = genre;
     }
 
+    public VideoGame(int id)
+    {
+        this.id = id;
+        this.name = "";
+        this.developer = "";
+        this.publisher = "";
+        this.genre = "";
+    }
+
     public int getId()
     {
         return id;
