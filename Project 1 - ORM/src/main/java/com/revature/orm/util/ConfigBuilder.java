@@ -12,7 +12,7 @@ public class ConfigBuilder
     private List<Metamodel> metamodels;
     private ConnectionUtilities connectionUtilities;
     
-    public void ConfigBuilder(String dbUrl, String username, String password, List<Class> classes)
+    public ConfigBuilder(String dbUrl, String username, String password, List<Class> classes)
     {
         connectionUtilities = new ConnectionUtilities();
         connectionUtilities.createConnection(dbUrl, username, password);
@@ -23,24 +23,24 @@ public class ConfigBuilder
         }
     }
     
-    public void addRecord(Object newRecord)
+    public boolean addRecord(Object newRecord)
     {
-        connectionUtilities.create(newRecord, findMetamodel(newRecord));
+        return connectionUtilities.create(newRecord, findMetamodel(newRecord));
     }
     
-    public void getRecords(String table)
+    public List<?> getRecords(String table)
     {
-        connectionUtilities.read(findMetamodel(table));
+        return connectionUtilities.read(findMetamodel(table));
     }
     
-    public void updateRecord(Object updatedRecord)
+    public boolean updateRecord(Object updatedRecord)
     {
-        connectionUtilities.update(updatedRecord, findMetamodel(updatedRecord));
+        return connectionUtilities.update(updatedRecord, findMetamodel(updatedRecord));
     }
     
-    public void deleteRecord(Object oldRecord)
+    public boolean deleteRecord(Object oldRecord)
     {
-        connectionUtilities.delete(oldRecord, findMetamodel(oldRecord));
+        return connectionUtilities.delete(oldRecord, findMetamodel(oldRecord));
     }
     
     private Metamodel<?> findMetamodel(Object relation)
