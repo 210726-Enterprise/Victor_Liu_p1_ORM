@@ -5,6 +5,8 @@ import com.revature.orm.annotations.Table;
 import com.revature.orm.model.ColumnField;
 import com.revature.orm.model.Metamodel;
 import com.revature.orm.model.PrimaryKeyField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 import java.sql.*;
@@ -17,6 +19,8 @@ import java.util.List;
  */
 public class ConnectionUtilities
 {
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionUtilities.class);
+
     private Connection connection;
 
     public void createConnection(String dbUrl, String username, String password)
@@ -27,13 +31,12 @@ public class ConnectionUtilities
         }
         catch (SQLException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.warn(e.getMessage(), e);
         }
     }
 
     // TODO: 8/18/2021 see if can refactor with helper methods
-    public <T> void create(Object newRecord, Metamodel<T> metamodel)
+    public <T> boolean create(Object newRecord, Metamodel<T> metamodel)
     {
         Class<T> newRecordClass = metamodel.getAClass();
 
@@ -60,13 +63,14 @@ public class ConnectionUtilities
             {
                 preparedStatement.setObject(i+1, columnFields.get(i).getField().get(newRecord));
             }
-            preparedStatement.execute();
+            int result = preparedStatement.executeUpdate();
+            return result != 0;
         }
         catch (SQLException | IllegalAccessException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.warn(e.getMessage(), e);
         }
+        return false;
     }
 
     // TODO: 8/19/2021
@@ -122,15 +126,15 @@ public class ConnectionUtilities
                 records.add(recordClass.cast(metamodelConstructor.newInstance(arguments)));
             }
         }
-        catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException throwables)
+        catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException e)
         {
-            throwables.printStackTrace();
+            logger.warn(e.getMessage(), e);
         }
 
         return records;
     }
 
-    public <T> void update(Object record, Metamodel<T> metamodel)
+    public <T> boolean update(Object record, Metamodel<T> metamodel)
     {
         Class<T> recordClass = metamodel.getAClass();
 
@@ -154,15 +158,17 @@ public class ConnectionUtilities
                 preparedStatement.setObject(i+1, columnFields.get(i).getField().get(record));
             }
             preparedStatement.setObject(columnFields.size()+1, primaryKeyField.getField().get(record));
-            preparedStatement.execute();
+            int result = preparedStatement.executeUpdate();
+            return result != 0;
         }
-        catch (SQLException | IllegalAccessException throwables)
+        catch (SQLException | IllegalAccessException e)
         {
-            throwables.printStackTrace();
+            logger.warn(e.getMessage(), e);
         }
+        return false;
     }
 
-    public <T> void delete(Object oldRecord, Metamodel<T> metamodel)
+    public <T> boolean delete(Object oldRecord, Metamodel<T> metamodel)
     {
         Class<T> recordClass = metamodel.getAClass();
 
@@ -176,11 +182,13 @@ public class ConnectionUtilities
         {
             preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setObject(1, primaryKeyField.getField().get(oldRecord));
-            preparedStatement.execute();
+            int result = preparedStatement.executeUpdate();
+            return result != 0;
         }
-        catch (SQLException | IllegalAccessException throwables)
+        catch (SQLException | IllegalAccessException e)
         {
-            throwables.printStackTrace();
+            logger.warn(e.getMessage(), e);
         }
+        return false;
     }
 }
