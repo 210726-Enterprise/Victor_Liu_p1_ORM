@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class VideoGameService
@@ -21,6 +23,9 @@ public class VideoGameService
     public VideoGameService(String dbUrl, String username, String password)
     {
         objectMapper = new ObjectMapper();
+        List<Class> classList = new ArrayList<>();
+        classList.add(VideoGame.class);
+        orm = new ConfigBuilder(dbUrl, username, password, classList);
     }
 
     public void getVideoGame(HttpServletRequest req, HttpServletResponse resp)
