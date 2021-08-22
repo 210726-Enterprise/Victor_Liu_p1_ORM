@@ -14,9 +14,10 @@ public class VideoGameServlet extends HttpServlet
 {
     VideoGameService videoGameService;
 
-    public VideoGameServlet(VideoGameService videoGameService)
+    public VideoGameServlet()
     {
-        this.videoGameService = videoGameService;
+        // TODO: 8/22/2021 put in dbinfo in constructor
+//        this.videoGameService = new VideoGameService();
     }
 
     @Override
