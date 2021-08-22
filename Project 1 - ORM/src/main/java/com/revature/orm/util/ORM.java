@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: 8/20/2021 rename class
-public class ConfigBuilder
+public class ORM
 {
     private List<Metamodel> metamodels;
     private ConnectionUtilities connectionUtilities;
     
-    public ConfigBuilder(String dbUrl, String username, String password, List<Class> classes)
+    public ORM(String dbUrl, String username, String password, List<Class> classes)
     {
         connectionUtilities = new ConnectionUtilities();
         connectionUtilities.createConnection(dbUrl, username, password);
