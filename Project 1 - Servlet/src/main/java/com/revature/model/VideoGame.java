@@ -83,4 +83,15 @@ public class VideoGame
     {
         this.genre = genre;
     }
+
+    @Override
+    public String toString() {
+        return "Video Game{" +
+                "id=" + id +
+                ", name='" + name +
+                ", developer='" + developer + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", genre='" + genre + '\'' +
+                '}';
+    }
 }
