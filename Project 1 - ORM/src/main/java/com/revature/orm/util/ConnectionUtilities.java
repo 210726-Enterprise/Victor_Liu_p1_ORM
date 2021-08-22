@@ -78,7 +78,7 @@ public class ConnectionUtilities
     {
         Class<T> recordClass = metamodel.getAClass();
 
-        String sqlStatement = "select * from \"" + recordClass.getAnnotation(Table.class).tableName();
+        String sqlStatement = "select * from \"" + recordClass.getAnnotation(Table.class).tableName() + "\"";
 
         PreparedStatement preparedStatement;
 
