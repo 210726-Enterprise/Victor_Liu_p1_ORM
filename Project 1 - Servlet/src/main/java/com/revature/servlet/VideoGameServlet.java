@@ -1,5 +1,6 @@
 package com.revature.servlet;
 
+import com.revature.orm.util.ORM;
 import com.revature.service.VideoGameService;
 
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Properties;
 
 @WebServlet(urlPatterns = "/videogames")
 public class VideoGameServlet extends HttpServlet
@@ -16,8 +18,10 @@ public class VideoGameServlet extends HttpServlet
 
     public VideoGameServlet()
     {
-        // TODO: 8/22/2021 put in dbinfo in constructor
-//        this.videoGameService = new VideoGameService();
+        this.videoGameService = new VideoGameService(
+                "jdbc:postgresql://project0.c4c3no36zu7c.us-east-2.rds.amazonaws.com:5432/",
+                "postgres",
+                "rI3VK00VlEcazaJ8XXoE");
     }
 
     @Override

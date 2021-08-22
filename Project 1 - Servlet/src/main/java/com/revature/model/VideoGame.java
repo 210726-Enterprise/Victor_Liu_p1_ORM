@@ -94,7 +94,8 @@ public class VideoGame
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Video Game{" +
                 "id=" + id +
                 ", name='" + name +
