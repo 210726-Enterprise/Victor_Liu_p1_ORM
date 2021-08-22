@@ -21,21 +21,17 @@ public class MetamodelTest
     public void getPrimaryKeyFieldTest() throws NoSuchFieldException
     {
         Metamodel<TestClass> testMetamodel = new Metamodel<>(TestClass.class);
-        Field testField = TestClass.class.getField("primaryKey");
-        testField.setAccessible(true);
-        PrimaryKeyField testPrimaryKey = new PrimaryKeyField(testField);
-        Assert.assertEquals(testMetamodel.getPrimaryKeyField(), testPrimaryKey);
+        Field testPrimaryKey = TestClass.class.getDeclaredField("primaryKey");
+        testPrimaryKey.setAccessible(true);
+        Assert.assertEquals(testMetamodel.getPrimaryKeyField().getClassFieldName(), testPrimaryKey.getName());
     }
 
     @Test
     public void getColumn() throws NoSuchFieldException
     {
         Metamodel<TestClass> testMetamodel = new Metamodel<>(TestClass.class);
-        List<ColumnField> testColumnFields = new ArrayList<>();
-        Field testField = TestClass.class.getField("column");
-        testField.setAccessible(true);
-        ColumnField testColumn = new ColumnField(testField);
-        testColumnFields.add(testColumn);
-        Assert.assertEquals(testMetamodel.getColumnFields(), testColumnFields);
+        Field testColumn = TestClass.class.getDeclaredField("column");
+        testColumn.setAccessible(true);
+        Assert.assertEquals(testMetamodel.getColumnFields().get(0).getClassFieldName(), testColumn.getName());
     }
 }
