@@ -41,8 +41,9 @@ public class DMLMethods
         sqlStatement += ")";
 
         PreparedStatement preparedStatement;
-        try(Connection connection = ConnectionUtilities.getConnection())
+        try
         {
+            Connection connection = ConnectionUtilities.getConnection();
             preparedStatement = connection.prepareStatement(sqlStatement);
             for(int i = 0; i < columnFields.size(); i++)
             {
@@ -70,8 +71,9 @@ public class DMLMethods
 
         List<T> records = new ArrayList<>();
 
-        try(Connection connection = ConnectionUtilities.getConnection())
+        try
         {
+            Connection connection = ConnectionUtilities.getConnection();
             preparedStatement = connection.prepareStatement(sqlStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -114,8 +116,9 @@ public class DMLMethods
         sqlStatement += " where \"" + primaryKeyField.getTableColumnName() + "\" = ?";
 
         PreparedStatement preparedStatement;
-        try(Connection connection = ConnectionUtilities.getConnection())
+        try
         {
+            Connection connection = ConnectionUtilities.getConnection();
             preparedStatement = connection.prepareStatement(sqlStatement);
             for(int i = 0; i < columnFields.size(); i++)
             {
@@ -142,8 +145,9 @@ public class DMLMethods
         sqlStatement += " where \"" + primaryKeyField.getTableColumnName() + "\" = ?";
 
         PreparedStatement preparedStatement;
-        try(Connection connection = ConnectionUtilities.getConnection())
+        try
         {
+            Connection connection = ConnectionUtilities.getConnection();
             preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setObject(1, primaryKeyField.getField().get(oldRecord));
             int result = preparedStatement.executeUpdate();
