@@ -8,10 +8,7 @@ import com.revature.orm.model.PrimaryKeyField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,15 +25,15 @@ public class DMLMethods
     {
         Class<T> newRecordClass = metamodel.getAClass();
 
-        String sqlStatement = "insert into \"" + newRecordClass.getAnnotation(Table.class).tableName() + "\"";
+        String sqlStatement = "insert into \"" + newRecordClass.getAnnotation(Table.class).tableName() + "\" ";
 
         List<ColumnField> columnFields = metamodel.getColumnFields();
-        sqlStatement += "(" + columnFields.get(0);
+        sqlStatement += "(\"" + columnFields.get(0).getTableColumnName() + "\"";
         for(int i = 1; i < columnFields.size(); i++)
         {
             sqlStatement += ", \"" + columnFields.get(i).getTableColumnName() + "\"";
         }
-        sqlStatement += ") values (? ";
+        sqlStatement += ") values (?";
         for(int i = 1; i < columnFields.size(); i++)
         {
             sqlStatement += ", ?";
@@ -49,7 +46,9 @@ public class DMLMethods
             preparedStatement = connection.prepareStatement(sqlStatement);
             for(int i = 0; i < columnFields.size(); i++)
             {
-                preparedStatement.setObject(i+1, columnFields.get(i).getField().get(newRecord));
+                Field columnField = columnFields.get(i).getField();
+                columnField.setAccessible(true);
+                preparedStatement.setObject(i+1, columnField.get(newRecord));
             }
             int result = preparedStatement.executeUpdate();
             return result != 0;

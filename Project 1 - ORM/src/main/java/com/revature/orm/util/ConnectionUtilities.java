@@ -19,7 +19,6 @@ public class ConnectionUtilities
         try
         {
             connection = DriverManager.getConnection(dbUrl, username, password);
-            System.out.print(connection);
         }
         catch (SQLException e)
         {
