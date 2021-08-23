@@ -107,7 +107,7 @@ public class VideoGame
     {
         return "Video Game{" +
                 "id=" + id +
-                ", name='" + name +
+                ", name='" + name + '\'' +
                 ", developer='" + developer + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", genre='" + genre + '\'' +
