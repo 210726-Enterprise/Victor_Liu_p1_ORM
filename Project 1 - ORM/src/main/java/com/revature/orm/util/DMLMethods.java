@@ -122,7 +122,9 @@ public class DMLMethods
             preparedStatement = connection.prepareStatement(sqlStatement);
             for(int i = 0; i < columnFields.size(); i++)
             {
-                preparedStatement.setObject(i+1, columnFields.get(i).getField().get(record));
+                Field columnField = columnFields.get(i).getField();
+                columnField.setAccessible(true);
+                preparedStatement.setObject(i+1, columnField.get(record));
             }
             preparedStatement.setObject(columnFields.size()+1, primaryKeyField.getField().get(record));
             int result = preparedStatement.executeUpdate();
@@ -139,7 +141,7 @@ public class DMLMethods
     {
         Class<T> recordClass = metamodel.getAClass();
 
-        String sqlStatement = "delete from \"" + recordClass.getAnnotation(Table.class).tableName();
+        String sqlStatement = "delete from \"" + recordClass.getAnnotation(Table.class).tableName() +"\"";
 
         PrimaryKeyField primaryKeyField = metamodel.getPrimaryKeyField();
         sqlStatement += " where \"" + primaryKeyField.getTableColumnName() + "\" = ?";
@@ -149,6 +151,7 @@ public class DMLMethods
         {
             Connection connection = ConnectionUtilities.getConnection();
             preparedStatement = connection.prepareStatement(sqlStatement);
+            primaryKeyField.getField().setAccessible(true);
             preparedStatement.setObject(1, primaryKeyField.getField().get(oldRecord));
             int result = preparedStatement.executeUpdate();
             return result != 0;
