@@ -70,5 +70,6 @@ public class Metamodel<E>
                 columnFields.add(new ColumnField(field));
             }
         }
+        columnFields.sort((ColumnField a, ColumnField b) -> a.compareTo(b));
     }
 }

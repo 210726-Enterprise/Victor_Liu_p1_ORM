@@ -43,4 +43,11 @@ public class ColumnField
     {
         return type;
     }
+
+    public int compareTo(ColumnField other)
+    {
+        Column thisAnnotation = field.getAnnotation(Column.class);
+        Column otherAnnotation = other.getField().getAnnotation(Column.class);
+        return thisAnnotation.parameterNumber() - otherAnnotation.parameterNumber();
+    }
 }

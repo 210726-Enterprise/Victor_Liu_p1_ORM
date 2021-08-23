@@ -78,30 +78,17 @@ public class DMLMethods
 
             Constructor<?> metamodelConstructor = metamodel.getMetamodelConstructor();
 
-            Parameter[] constructorParameters = metamodelConstructor.getParameters();
             List<ColumnField> columnFields = metamodel.getColumnFields();
-            List<ColumnField> sortedColumnFieldsInParameterOrder = new ArrayList<>();
-            for(Parameter parameter : constructorParameters)
-            {
-                for (ColumnField columnField : columnFields)
-                {
-                    if(columnField.getClassFieldName().equals(parameter.getName()))
-                  {
-                          sortedColumnFieldsInParameterOrder.add(columnField);
-                        break;
-                    }
-                }
-            }
+
             while(resultSet.next())
             {
                 List<Object> arguments = new ArrayList<>();
-                for(ColumnField columnField : sortedColumnFieldsInParameterOrder)
+                for(ColumnField columnField : columnFields)
                 {
-                    Type argumentType = columnField.getType();
                     Object record = resultSet.getObject(columnField.getTableColumnName());
-                    arguments.add(argumentType.getClass().cast(record));
+                    arguments.add(record);
                 }
-                records.add(recordClass.cast(metamodelConstructor.newInstance(arguments)));
+                records.add(recordClass.cast(metamodelConstructor.newInstance(arguments.toArray())));
             }
         }
         catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException e)
