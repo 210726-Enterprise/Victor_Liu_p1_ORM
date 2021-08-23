@@ -28,7 +28,7 @@ public class ORM
         return databaseManipulator.create(newRecord, findMetamodel(newRecord));
     }
     
-    public List<?> getRecords(String table)
+    public List getRecords(String table)
     {
         return databaseManipulator.read(findMetamodel(table));
     }
