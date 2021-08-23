@@ -8,20 +8,20 @@ import com.revature.orm.annotations.Table;
 @Table(tableName = "videogames")
 public class VideoGame
 {
-    @Column(columnName = "id")
+    @Column(columnName = "id", parameterNumber = 0)
     @PrimaryKey(primaryKeyName = "id")
     private int id;
 
-    @Column(columnName = "name")
+    @Column(columnName = "name", parameterNumber = 1)
     private String name;
 
-    @Column(columnName = "developer")
+    @Column(columnName = "developer", parameterNumber = 2)
     private String developer;
 
-    @Column(columnName = "publisher")
+    @Column(columnName = "publisher", parameterNumber = 3)
     private String publisher;
 
-    @Column(columnName = "genre")
+    @Column(columnName = "genre", parameterNumber = 4)
     private String genre;
 
     @MetamodelConstructor
