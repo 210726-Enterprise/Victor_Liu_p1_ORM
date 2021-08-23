@@ -32,9 +32,8 @@ public class VideoGameService
     {
         try
         {
-            String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(orm.getRecords("VideoGames"));
+            String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(orm.getRecords("videogames"));
             resp.getOutputStream().print(json);
-
         }
         catch (IOException e)
         {
@@ -80,8 +79,8 @@ public class VideoGameService
                     .collect(Collectors.toList())
                     .forEach(builder::append);
 
-            VideoGame newVideoGame = objectMapper.readValue(builder.toString(), VideoGame.class);
-            boolean result = orm.updateRecord(newVideoGame);
+            VideoGame currentVideoGame = objectMapper.readValue(builder.toString(), VideoGame.class);
+            boolean result = orm.updateRecord(currentVideoGame);
 
             if(result)
             {
@@ -102,30 +101,16 @@ public class VideoGameService
 
     public void deleteVideoGame(HttpServletRequest req, HttpServletResponse resp)
     {
-        try
+        int gameId = Integer.parseInt(req.getParameter("id"));
+        VideoGame oldVideoGame = new VideoGame(gameId);
+        boolean result = orm.deleteRecord(oldVideoGame);
+        if(result)
         {
-            StringBuilder builder = new StringBuilder();
-            req.getReader().lines()
-                    .collect(Collectors.toList())
-                    .forEach(builder::append);
-
-            VideoGame newVideoGame = objectMapper.readValue(builder.toString(), VideoGame.class);
-            boolean result = orm.deleteRecord(newVideoGame);
-
-            if(result)
-            {
-                resp.setStatus(HttpServletResponse.SC_CREATED);
-            }
-            else
-            {
-                resp.setStatus(HttpServletResponse.SC_CONFLICT);
-            }
-
+            resp.setStatus(HttpServletResponse.SC_CREATED);
         }
-        catch (Exception e)
+        else
         {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            logger.warn(e.getMessage());
+            resp.setStatus(HttpServletResponse.SC_CONFLICT);
         }
     }
 }
