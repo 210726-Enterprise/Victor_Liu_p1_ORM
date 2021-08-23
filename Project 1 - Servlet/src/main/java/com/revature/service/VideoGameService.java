@@ -20,12 +20,10 @@ public class VideoGameService
     private ObjectMapper objectMapper;
     private ORM orm;
 
-    public VideoGameService(String dbUrl, String username, String password)
+    public VideoGameService(ORM orm, ObjectMapper objectMapper)
     {
-        objectMapper = new ObjectMapper();
-        List<Class> classList = new ArrayList<>();
-        classList.add(VideoGame.class);
-        orm = new ORM(dbUrl, username, password, classList);
+        this.objectMapper = objectMapper;
+        this.orm = orm;
     }
 
     public void getVideoGame(HttpServletRequest req, HttpServletResponse resp)

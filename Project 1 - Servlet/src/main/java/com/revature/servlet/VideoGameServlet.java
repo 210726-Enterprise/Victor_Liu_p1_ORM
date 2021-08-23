@@ -11,19 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/videogames")
 public class VideoGameServlet extends HttpServlet
 {
     private static final Logger logger = LoggerFactory.getLogger(VideoGameService.class);
 
     VideoGameService videoGameService;
 
-    public VideoGameServlet()
+    public VideoGameServlet(VideoGameService videoGameService)
     {
-        this.videoGameService = new VideoGameService(
-                "jdbc:postgresql://revature-assignment-db.c4c3no36zu7c.us-east-2.rds.amazonaws.com:5432/postgres",
-                "postgres",
-                "rI3VK00VlEcazaJ8XXoE");
+        this.videoGameService = videoGameService;
     }
 
     @Override
