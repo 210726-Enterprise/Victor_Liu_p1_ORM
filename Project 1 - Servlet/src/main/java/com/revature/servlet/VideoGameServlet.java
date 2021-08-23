@@ -17,7 +17,7 @@ public class VideoGameServlet extends HttpServlet
     public VideoGameServlet()
     {
         this.videoGameService = new VideoGameService(
-                "jdbc:postgresql://project0.c4c3no36zu7c.us-east-2.rds.amazonaws.com:5432/postgres",
+                "jdbc:postgresql://revature-assignment-db.c4c3no36zu7c.us-east-2.rds.amazonaws.com:5432/postgres",
                 "postgres",
                 "rI3VK00VlEcazaJ8XXoE");
     }
