@@ -1,6 +1,7 @@
 package com.revature.orm.model;
 
 import com.revature.orm.annotations.Column;
+import com.revature.orm.annotations.MetamodelConstructor;
 import com.revature.orm.annotations.PrimaryKey;
 
 import java.lang.reflect.*;
@@ -16,6 +17,7 @@ public class Metamodel<E>
     private final Class<E> aClass;
     private PrimaryKeyField primaryKeyField;
     private List<ColumnField> columnFields;
+    private Constructor metamodelConstructor;
 
     public Metamodel(Class<E> aClass)
     {
@@ -38,8 +40,23 @@ public class Metamodel<E>
         return columnFields;
     }
 
+    public Constructor getMetamodelConstructor()
+    {
+        return metamodelConstructor;
+    }
+
     private void createMappings()
     {
+        Constructor<?>[] constructors = aClass.getDeclaredConstructors();
+        for(Constructor<?> constructor : constructors)
+        {
+            if (constructor.getAnnotation(MetamodelConstructor.class) != null)
+            {
+                metamodelConstructor = constructor;
+                break;
+            }
+        }
+
         columnFields = new ArrayList<>();
         Field[] fields = aClass.getDeclaredFields();
         for(Field field: fields)
@@ -48,7 +65,7 @@ public class Metamodel<E>
             {
                 primaryKeyField = new PrimaryKeyField(field);
             }
-            else if(field.getAnnotation(Column.class) != null)
+            if(field.getAnnotation(Column.class) != null)
             {
                 columnFields.add(new ColumnField(field));
             }

@@ -76,16 +76,7 @@ public class DMLMethods
             preparedStatement = connection.prepareStatement(sqlStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            Constructor<?>[] constructors = recordClass.getDeclaredConstructors();
-            Constructor<?> metamodelConstructor = null;
-            for(Constructor<?> constructor : constructors)
-            {
-                if (constructor.getAnnotation(MetamodelConstructor.class) != null)
-                {
-                    metamodelConstructor = constructor;
-                    break;
-                }
-            }
+            Constructor<?> metamodelConstructor = metamodel.getMetamodelConstructor();
 
             Parameter[] constructorParameters = metamodelConstructor.getParameters();
             List<ColumnField> columnFields = metamodel.getColumnFields();
@@ -95,8 +86,8 @@ public class DMLMethods
                 for (ColumnField columnField : columnFields)
                 {
                     if(columnField.getClassFieldName().equals(parameter.getName()))
-                    {
-                        sortedColumnFieldsInParameterOrder.add(columnField);
+                  {
+                          sortedColumnFieldsInParameterOrder.add(columnField);
                         break;
                     }
                 }
