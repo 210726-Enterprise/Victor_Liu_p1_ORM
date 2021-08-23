@@ -5,7 +5,7 @@ import com.revature.orm.annotations.MetamodelConstructor;
 import com.revature.orm.annotations.PrimaryKey;
 import com.revature.orm.annotations.Table;
 
-@Table(tableName = "VideoGames")
+@Table(tableName = "videogames")
 public class VideoGame
 {
     @Column(columnName = "id")
