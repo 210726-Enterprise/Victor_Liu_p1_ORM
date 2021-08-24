@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class VideoGameService
@@ -31,11 +29,13 @@ public class VideoGameService
         try
         {
             String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(orm.getRecords("videogames"));
+            resp.setStatus(HttpServletResponse.SC_OK);
             resp.getOutputStream().print(json);
         }
         catch (IOException e)
         {
             logger.warn(e.getMessage(), e);
+            resp.setStatus(HttpServletResponse.SC_CONFLICT);
         }
     }
 
@@ -61,7 +61,7 @@ public class VideoGameService
             }
 
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             logger.warn(e.getMessage());
@@ -90,7 +90,7 @@ public class VideoGameService
             }
 
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             logger.warn(e.getMessage());
