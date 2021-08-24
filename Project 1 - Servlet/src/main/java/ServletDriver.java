@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.revature.model.VideoGame;
 import com.revature.orm.util.ORM;
 import com.revature.service.VideoGameService;
@@ -24,7 +25,7 @@ public class ServletDriver implements ServletContextListener
                 "postgres",
                 "rI3VK00VlEcazaJ8XXoE",
                 classList);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
         VideoGameService videoGameService = new VideoGameService(videoGameORM, objectMapper);
 
