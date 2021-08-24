@@ -98,4 +98,26 @@ class VideoGameModelTest
                 ", genre='testgenre'" +
                 '}');
     }
+
+    @Test
+    void idConstructorTest()
+    {
+        VideoGame testVideoGame = new VideoGame(100);
+        assertEquals(testVideoGame.getId(), 100);
+        assertEquals(testVideoGame.getName(), "");
+        assertEquals(testVideoGame.getDeveloper(), "");
+        assertEquals(testVideoGame.getPublisher(), "");
+        assertEquals(testVideoGame.getGenre(), "");
+    }
+
+    @Test
+    void defaultConstructorTest()
+    {
+        VideoGame testVideoGame = new VideoGame();
+        assertEquals(testVideoGame.getId(), 0);
+        assertEquals(testVideoGame.getName(), "");
+        assertEquals(testVideoGame.getDeveloper(), "");
+        assertEquals(testVideoGame.getPublisher(), "");
+        assertEquals(testVideoGame.getGenre(), "");
+    }
 }
