@@ -16,11 +16,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * handles all JDBC code
+ */
 public class DMLMethods
 {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionUtilities.class);
 
-    // TODO: 8/18/2021 see if can refactor with helper methods
+    /**
+     * insert a new record into the database
+     * @param newRecord record to insert
+     * @param metamodel matching metamodel
+     * @param <T> type belonging to the record
+     * @return true if successful
+     */
     public <T> boolean create(Object newRecord, Metamodel<T> metamodel)
     {
         Class<T> newRecordClass = metamodel.getAClass();
@@ -61,6 +70,12 @@ public class DMLMethods
         return false;
     }
 
+    /**
+     * get all records from the database
+     * @param metamodel matching metamodel
+     * @param <T> type belonging to the record
+     * @return list of all the records
+     */
     public <T> List<T> read(Metamodel<T> metamodel)
     {
         Class<T> recordClass = metamodel.getAClass();
@@ -100,6 +115,13 @@ public class DMLMethods
         return records;
     }
 
+    /**
+     * updates a record in the database
+     * @param record record to update
+     * @param metamodel matching metamodel
+     * @param <T> type belonging to record
+     * @return true if successful
+     */
     public <T> boolean update(Object record, Metamodel<T> metamodel)
     {
         Class<T> recordClass = metamodel.getAClass();
@@ -137,6 +159,13 @@ public class DMLMethods
         return false;
     }
 
+    /**
+     * delete a record from the database
+     * @param oldRecord record to delete
+     * @param metamodel matching metamodel
+     * @param <T> type belonging to record
+     * @return true if successful
+     */
     public <T> boolean delete(Object oldRecord, Metamodel<T> metamodel)
     {
         Class<T> recordClass = metamodel.getAClass();

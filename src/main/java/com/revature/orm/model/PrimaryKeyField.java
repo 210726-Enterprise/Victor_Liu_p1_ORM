@@ -4,6 +4,9 @@ import com.revature.orm.annotations.PrimaryKey;
 
 import java.lang.reflect.Field;
 
+/**\
+ * helper class for linking class fields and table primary keys
+ */
 public class PrimaryKeyField
 {
     private final Field field;

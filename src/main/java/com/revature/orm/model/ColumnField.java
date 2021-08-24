@@ -4,6 +4,9 @@ import com.revature.orm.annotations.Column;
 
 import java.lang.reflect.Field;
 
+/**
+ * helper class for linking class fields and table columns
+ */
 public class ColumnField
 {
     private final Field field;

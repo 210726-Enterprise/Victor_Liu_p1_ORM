@@ -6,7 +6,9 @@ import com.revature.orm.model.Metamodel;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: 8/20/2021 rename class
+/**
+ *
+ */
 public class ORM
 {
     private List<Metamodel> metamodels;

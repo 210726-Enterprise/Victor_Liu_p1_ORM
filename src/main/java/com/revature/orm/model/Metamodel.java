@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  * Class for converting between objects and database records
- * @param <E>
+ * @param <E> type of object, designated by web developer
  */
 // TODO: 8/17/2021 Rename class?
 public class Metamodel<E>
