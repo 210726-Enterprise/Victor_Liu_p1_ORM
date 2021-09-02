@@ -19,3 +19,5 @@ A custom ORM developed in Java 8
     - addRecord(Object newRecord) - adds a new record into the table
     - updateRecord(Object updatedRecord) - updates a record from the table
     - deleteRecord(Object oldRecord) - deletes a record from the table
+
+https://github.com/210726-Enterprise/Victor_Liu_project-1_webapp - my custom webapp which uses this ORM
