@@ -10,6 +10,7 @@ A custom object relational mapping (ORM) framework, written in Java, which allow
 * PostgreSQL
 * Apache Maven
 * AWS RDS
+* DBeaver
 
 ## Features
 
